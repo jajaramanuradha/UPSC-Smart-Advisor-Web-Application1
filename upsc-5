@@ -1,0 +1,1 @@
+function checkQuiz(){const a=document.querySelector('input[name=q]:checked'),r=document.getElementById('result');if(!a){r.textContent='Please select an answer.';return}r.textContent=a.value==='A'?'Correct Answer!':'Incorrect. Correct answer: Article 12–35.'}
