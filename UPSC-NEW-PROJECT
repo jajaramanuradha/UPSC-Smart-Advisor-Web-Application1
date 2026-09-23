@@ -1,0 +1,18 @@
+# UPSC Smart Advisor
+
+A frontend web application for UPSC preparation.
+
+## Features
+- Subject search
+- Smart study advisor
+- MCQ practice
+- Study planner
+- Progress tracking
+- Dark mode
+- Responsive design
+
+## Technologies
+HTML, CSS, JavaScript
+
+## Run
+Open `index.html` in any modern web browser.
