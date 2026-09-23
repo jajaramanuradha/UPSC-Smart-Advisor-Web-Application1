@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Smart Advisor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f5f7fb;color:#222;transition:.3s}
+nav{background:#182848;color:white;padding:18px 8%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000}
+nav a{color:white;text-decoration:none;margin-left:18px}
+nav a:hover{color:#ffd700}
+#darkBtn{border:0;background:#ffd700;padding:8px 12px;border-radius:5px;cursor:pointer}
+.hero{min-height:70vh;display:flex;justify-content:center;align-items:center;text-align:center;padding:30px;background:linear-gradient(135deg,#182848,#4b6cb7);color:white}
+.hero h1{font-size:45px;margin-bottom:15px}.hero p{font-size:20px;margin-bottom:25px}
+.btn{display:inline-block;background:#ffd700;color:#111;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:bold;border:0;cursor:pointer}
+section{padding:60px 8%}section h2{text-align:center;margin-bottom:30px;color:#182848}
+.search{display:block;width:90%;max-width:600px;margin:0 auto 30px;padding:14px;border:1px solid #ccc;border-radius:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card,.advisor-box,.quiz-box,.planner{background:white;padding:25px;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,.1)}
+.card{text-align:center}.card h3{margin-bottom:10px;color:#182848}
+.advisor-box,.quiz-box,.planner,.progress-container{max-width:700px;margin:auto}
+select,input{width:100%;padding:12px;margin:10px 0 20px;border:1px solid #ccc;border-radius:6px}
+#advice{margin-top:20px;padding:15px;background:#eef4ff;border-radius:8px;display:none}
+.option{display:block;margin:10px 0;padding:12px;background:#f1f1f1;border-radius:6px;cursor:pointer}
+#quizResult{margin-top:20px;font-weight:bold}
+.task{display:flex;justify-content:space-between;padding:12px;background:#f1f3f8;margin:8px 0;border-radius:6px}
+.progress{background:#ddd;height:25px;border-radius:20px;overflow:hidden}
+.progress-bar{width:0;height:100%;background:#4b6cb7;text-align:center;color:white;line-height:25px}
+footer{background:#182848;color:white;text-align:center;padding:25px}
+body.dark{background:#121212;color:white}
+body.dark .card,body.dark .advisor-box,body.dark .quiz-box,body.dark .planner{background:#1e1e1e;color:white}
+body.dark section h2,body.dark .card h3{color:#ffd700}
+body.dark .option,body.dark .task{background:#333}
+@media(max-width:700px){nav{flex-direction:column;gap:12px}nav a{margin-left:7px;font-size:13px}.hero h1{font-size:32px}.hero p{font-size:16px}}
+</style>
+</head>
+<body>
+<nav>
+<h2>UPSC Smart Advisor</h2>
+<div>
+<a href="#home">Home</a><a href="#subjects">Subjects</a><a href="#advisor">Advisor</a><a href="#quiz">Quiz</a><a href="#planner">Planner</a>
+<button id="darkBtn" onclick="toggleDarkMode()">🌙</button>
+</div>
+</nav>
+
+<section class="hero" id="home">
+<div><h1>UPSC Smart Advisor</h1><p>Smart and organized preparation platform for UPSC aspirants.</p><a href="#advisor" class="btn">Get Study Advice</a></div>
+</section>
+
+<section id="subjects">
+<h2>UPSC Subjects</h2>
+<input type="text" id="subjectSearch" class="search" placeholder="Search subject..." onkeyup="searchSubjects()">
+<div class="cards" id="subjectCards">
+<div class="card subject"><h3>History</h3><p>Ancient, Medieval and Modern Indian History.</p></div>
+<div class="card subject"><h3>Geography</h3><p>Physical, Indian and World Geography.</p></div>
+<div class="card subject"><h3>Polity</h3><p>Indian Constitution and Governance.</p></div>
+<div class="card subject"><h3>Economy</h3><p>Indian Economy and Economic Development.</p></div>
+<div class="card subject"><h3>Environment</h3><p>Environment, Ecology and Biodiversity.</p></div>
+<div class="card subject"><h3>Science & Technology</h3><p>Science, Technology and Current Developments.</p></div>
+</div>
+</section>
+
+<section id="advisor">
+<h2>Smart Study Advisor</h2>
+<div class="advisor-box">
+<label>Select Subject</label>
+<select id="subject">
+<option>History</option><option>Geography</option><option>Polity</option><option>Economy</option><option>Environment</option><option>Science & Technology</option>
+</select>
+<label>Daily Study Hours</label>
+<input type="number" id="hours" min="1" max="15" placeholder="Example: 5">
+<button class="btn" onclick="generateAdvice()">Generate Advice</button>
+<div id="advice"></div>
+</div>
+</section>
+
+<section id="quiz">
+<h2>UPSC MCQ Practice</h2>
+<div class="quiz-box">
+<h3>Which Article of the Indian Constitution deals with Fundamental Rights?</h3>
+<label class="option"><input type="radio" name="answer" value="A"> Article 12–35</label>
+<label class="option"><input type="radio" name="answer" value="B"> Article 36–51</label>
+<label class="option"><input type="radio" name="answer" value="C"> Article 52–78</label>
+<label class="option"><input type="radio" name="answer" value="D"> Article 80–100</label>
+<button class="btn" onclick="checkAnswer()">Submit Answer</button>
+<div id="quizResult"></div>
+</div>
+</section>
+
+<section id="planner">
+<h2>Study Planner</h2>
+<div class="planner">
+<input type="text" id="taskInput" placeholder="Enter study task...">
+<button class="btn" onclick="addTask()">Add Task</button>
+<div id="taskList"></div>
+</div>
+</section>
+
+<section>
+<h2>Study Progress</h2>
+<div class="progress-container">
+<p>Preparation Progress</p><br>
+<div class="progress"><div class="progress-bar" id="progressBar">0%</div></div><br>
+<button class="btn" onclick="increaseProgress()">Update Progress</button>
+</div>
+</section>
+
+<footer><p>© 2026 UPSC Smart Advisor</p><p>Designed for UPSC Aspirants</p></footer>
+
+<script>
+function toggleDarkMode(){document.body.classList.toggle("dark")}
+function searchSubjects(){
+let input=document.getElementById("subjectSearch").value.toLowerCase();
+document.querySelectorAll(".subject").forEach(card=>{
+card.style.display=card.innerText.toLowerCase().includes(input)?"block":"none";
+});
+}
+function generateAdvice(){
+let subject=document.getElementById("subject").value;
+let hours=document.getElementById("hours").value;
+let advice=document.getElementById("advice");
+if(hours===""){advice.style.display="block";advice.innerHTML="Please enter your daily study hours.";return}
+let message=hours<=2?"Start with basic concepts and revise daily.":hours<=5?"Divide your time between concepts, notes and MCQ practice.":"Follow a detailed schedule with revision, MCQs and mock tests.";
+advice.style.display="block";
+advice.innerHTML="<strong>Subject:</strong> "+subject+"<br><br><strong>Recommended Plan:</strong> "+message;
+}
+function checkAnswer(){
+let answer=document.querySelector('input[name="answer"]:checked');
+let result=document.getElementById("quizResult");
+if(!answer){result.innerHTML="Please select an answer.";return}
+result.innerHTML=answer.value==="A"?"✅ Correct Answer!":"❌ Incorrect. Correct answer: Article 12–35.";
+}
+function addTask(){
+let input=document.getElementById("taskInput"),task=input.value.trim();
+if(!task){alert("Please enter a task.");return}
+let div=document.createElement("div");div.className="task";
+div.innerHTML="<span>"+task+"</span><button onclick='this.parentElement.remove()'>✓</button>";
+document.getElementById("taskList").appendChild(div);input.value="";
+}
+let progress=0;
+function increaseProgress(){
+if(progress<100)progress+=10;
+document.getElementById("progressBar").style.width=progress+"%";
+document.getElementById("progressBar").innerText=progress+"%";
+}
+</script>
+</body>
+</html>
